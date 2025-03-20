@@ -1,12 +1,8 @@
-import { Keyboard } from "./Keyboard.tsx"
-
-const layout = [
-  ["Esc", "1"],
-  ["Tab", "Q"],
-]
+import { Keyboard } from "./Keyboard"
+import { default60 } from "./keyboard-layouts/default60"
 
 export default () => (
-  <board width="10mm" height="10mm">
-    <Keyboard layout={layout} />
+  <board>
+    <Keyboard layout={default60} />
   </board>
 )
