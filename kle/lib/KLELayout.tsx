@@ -1,5 +1,7 @@
 // Define the types for keyboard-layout-editor.com JSON format
 
+import { getRefDesForKey } from "lib/getRefDesForKey"
+
 export type KLEKey =
   | string
   | {
@@ -21,6 +23,7 @@ export type KLEKey =
       sm?: string
       sb?: string
       st?: string
+      a?: number
     }
 
 export type KLELayout = KLEKey[][]
@@ -38,6 +41,8 @@ export const parseKLELayout = (layout: KLELayout) => {
     rotation: number
     rotationX: number
     rotationY: number
+    row: number
+    col: number
   }> = []
 
   let currentX = 0
@@ -53,6 +58,7 @@ export const parseKLELayout = (layout: KLELayout) => {
     height: 1,
     x: 0,
     y: 0,
+    align: undefined as undefined | number,
   }
 
   layout.forEach((row) => {
@@ -70,44 +76,17 @@ export const parseKLELayout = (layout: KLELayout) => {
         if (item.r !== undefined) currentRotation = item.r
         if (item.rx !== undefined) currentRotationX = item.rx
         if (item.ry !== undefined) currentRotationY = item.ry
+        if (item.a !== undefined) currentProps.align = item.a
       }
 
       // If it's a string, it's a key label
-      else if (typeof item === "string" && item.length > 0) {
-        // Determine key label based on the content
-        let keyLabel = `K${keyCount}`
-
-        // If the item is a single alphabetical character, use it in the name
-        if (item.length === 1 && /^[A-Za-z]$/.test(item)) {
-          keyLabel = `K_${item.toUpperCase()}`
-        }
-        // For numbers 0-9, use K_N format
-        else if (item.length === 1 && /^[0-9]$/.test(item)) {
-          keyLabel = `K_N${item}`
-        }
-        // For multi-character items, check if they contain newlines
-        else if (item.includes("\n")) {
-          const parts = item.split("\n")
-          // Check if the last part is alphabetical
-          if (
-            parts[parts.length - 1].length === 1 &&
-            /^[A-Za-z]$/.test(parts[parts.length - 1])
-          ) {
-            keyLabel = `K_${parts[parts.length - 1].toUpperCase()}`
-          }
-          // Check if the last part is a number
-          else if (
-            parts[parts.length - 1].length === 1 &&
-            /^[0-9]$/.test(parts[parts.length - 1])
-          ) {
-            keyLabel = `K_N${parts[parts.length - 1]}`
-          }
-        }
+      else if (typeof item === "string") {
+        const refDes = getRefDesForKey(item)
 
         keys.push({
-          name: keyLabel,
-          x: currentX * KEY_SIZE,
-          y: -currentY * KEY_SIZE,
+          name: refDes,
+          x: (currentX + currentProps.width / 2) * KEY_SIZE,
+          y: -(currentY + currentProps.height / 2) * KEY_SIZE,
           width: currentProps.width * KEY_SIZE,
           height: currentProps.height * KEY_SIZE,
           rotation: currentRotation,

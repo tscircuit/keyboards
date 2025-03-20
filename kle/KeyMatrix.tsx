@@ -2,10 +2,10 @@ import { Key } from "@tsci/seveibar.Key"
 import { KLELayout, parseKLELayout } from "./lib/KLELayout"
 import { PICO } from "@tsci/seveibar.PICO"
 
-interface KeyboardProps {
+interface KeyMatrixProps {
   layout: KLELayout
-  rowToMicroPin?: Record<number, string>
-  colToMicroPin?: Record<number, string>
+  rowToMicroPin?: string[]
+  colToMicroPin?: string[]
   name?: string
   pcbX?: number
   pcbY?: number
@@ -13,7 +13,7 @@ interface KeyboardProps {
   schY?: number
 }
 
-export const Keyboard = ({
+export const KeyMatrix = ({
   layout,
   rowToMicroPin,
   colToMicroPin,
@@ -22,7 +22,7 @@ export const Keyboard = ({
   pcbY = 0,
   schX = 0,
   schY = 0,
-}: KeyboardProps) => {
+}: KeyMatrixProps) => {
   const keys = parseKLELayout(layout)
 
   const minX = Math.min(...keys.map((k) => k.x))
@@ -54,21 +54,24 @@ export const Keyboard = ({
         }
 
         return (
-          <Key
-            key={key.name}
-            name={`${key.name}`}
-            pcbX={relX}
-            pcbY={relY}
-            schX={relX / 5} // Scale down for schematic view
-            schY={relY / 5} // Scale down for schematic view
-            connections={connections}
-          />
+          <group key={key.name}>
+            <Key
+              name={`${key.name}`}
+              pcbX={relX}
+              pcbY={relY}
+              schX={20 + relX / 10} // Scale down for schematic view
+              schY={relY / 10} // Scale down for schematic view
+              connections={connections}
+            />
+            {rowToMicroPin?.[row] !== undefined && (
+              <trace from={`.${key.name} .pin1`} to={rowToMicroPin[row]} />
+            )}
+            {colToMicroPin?.[col] !== undefined && (
+              <trace from={`.${key.name} .pin2`} to={colToMicroPin[col]} />
+            )}
+          </group>
         )
       })}
-      <footprint>
-        <silkscreentext text={name} pcbY={-maxY / 2 - 5} />
-      </footprint>
-      <PICO name="U1" />
     </group>
   )
 }
