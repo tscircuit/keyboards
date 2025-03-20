@@ -54,15 +54,14 @@ export const KeyMatrix = ({
         }
 
         return (
-          <group key={key.name}>
-            <Key
-              name={`${key.name}`}
-              pcbX={relX}
-              pcbY={relY}
-              schX={20 + relX / 10} // Scale down for schematic view
-              schY={relY / 10} // Scale down for schematic view
-              connections={connections}
-            />
+          <group
+            key={key.name}
+            pcbX={relX}
+            pcbY={relY}
+            schX={20 + relX / 10} // Scale down for schematic view
+            schY={relY / 10} // Scale down for schematic view
+          >
+            <Key name={`${key.name}`} />
             {rowToMicroPin?.[row] !== undefined && (
               <trace from={`.${key.name} .pin1`} to={rowToMicroPin[row]} />
             )}

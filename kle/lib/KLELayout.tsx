@@ -61,8 +61,9 @@ export const parseKLELayout = (layout: KLELayout) => {
     align: undefined as undefined | number,
   }
 
-  layout.forEach((row) => {
+  layout.forEach((row, rowIndex) => {
     currentX = 0
+    let colIndex = 0
 
     // Process each item in the row
     row.forEach((item) => {
@@ -92,11 +93,14 @@ export const parseKLELayout = (layout: KLELayout) => {
           rotation: currentRotation,
           rotationX: currentRotationX * KEY_SIZE,
           rotationY: currentRotationY * KEY_SIZE,
+          row: rowIndex,
+          col: colIndex,
         })
 
         // Move to the next position
         currentX += currentProps.width
         keyCount++
+        colIndex++
 
         // Reset width and height to default for the next key
         currentProps.width = 1
