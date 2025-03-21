@@ -1,6 +1,8 @@
 import { Key } from "@tsci/seveibar.Key"
 import { KLELayout, parseKLELayout } from "./lib/KLELayout"
 import { PICO } from "@tsci/seveibar.PICO"
+import { A_1N4148WS } from "./imports/A1N4148WS"
+// SmdDiode usage:
 
 interface KeyMatrixProps {
   layout: KLELayout
