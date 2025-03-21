@@ -61,6 +61,7 @@ export const parseKLELayout = (layout: KLELayout) => {
     align: undefined as undefined | number,
   }
 
+  const nameCounters = new Map<string, number>()
   layout.forEach((row, rowIndex) => {
     currentX = 0
     let colIndex = 0
@@ -82,7 +83,20 @@ export const parseKLELayout = (layout: KLELayout) => {
 
       // If it's a string, it's a key label
       else if (typeof item === "string") {
-        const refDes = getRefDesForKey(item)
+        let refDes = getRefDesForKey(item)
+
+        if (nameCounters.has(refDes)) {
+          // Edit the original item to include the counter (if it doesn't have it)
+          const ogKey = keys.find((k) => k.name === refDes)
+          if (ogKey) {
+            ogKey.name = `${refDes}${nameCounters.get(refDes)!}`
+          }
+
+          nameCounters.set(refDes, nameCounters.get(refDes)! + 1)
+          refDes = `${refDes}${nameCounters.get(refDes)!}`
+        } else {
+          nameCounters.set(refDes, 1)
+        }
 
         keys.push({
           name: refDes,

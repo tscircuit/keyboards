@@ -1,8 +1,6 @@
 import { Key } from "@tsci/seveibar.Key"
-import { KLELayout, parseKLELayout } from "./lib/KLELayout"
-import { PICO } from "@tsci/seveibar.PICO"
-import { A_1N4148WS } from "./imports/A1N4148WS"
-// SmdDiode usage:
+import { KLELayout, parseKLELayout } from "./KLELayout"
+import { A_1N4148WS } from "imports/A1N4148WS"
 
 interface KeyMatrixProps {
   layout: KLELayout
@@ -39,22 +37,6 @@ export const KeyMatrix = ({
         const relX = key.x - (minX + maxX) / 2
         const relY = key.y - (minY + maxY) / 2
 
-        // Calculate row and column for matrix connections if needed
-        const row = Math.floor(key.y / 19.05)
-        const col = Math.floor(key.x / 19.05)
-
-        // Optional connections based on rowToMicroPin and colToMicroPin
-        const connections: { pin1?: string; pin2?: string } = {}
-
-        if (rowToMicroPin && colToMicroPin) {
-          if (rowToMicroPin[row]) {
-            connections.pin1 = rowToMicroPin[row]
-          }
-          if (colToMicroPin[col]) {
-            connections.pin2 = colToMicroPin[col]
-          }
-        }
-
         return (
           <group
             key={key.name}
@@ -63,12 +45,21 @@ export const KeyMatrix = ({
             schX={20 + relX / 10} // Scale down for schematic view
             schY={relY / 10} // Scale down for schematic view
           >
-            <Key name={`${key.name}`} />
-            {rowToMicroPin?.[row] !== undefined && (
-              <trace from={`.${key.name} .pin1`} to={rowToMicroPin[row]} />
+            <Key name={key.name} />
+            {rowToMicroPin?.[key.row] !== undefined && (
+              <A_1N4148WS
+                name={`${key.name}_DIO`}
+                connections={{
+                  A: `.${key.name} .pin1`,
+                  C: rowToMicroPin[key.row],
+                }}
+                pcbX={0.5}
+                pcbY={-13.5}
+                layer="bottom"
+              />
             )}
-            {colToMicroPin?.[col] !== undefined && (
-              <trace from={`.${key.name} .pin2`} to={colToMicroPin[col]} />
+            {colToMicroPin?.[key.col] !== undefined && (
+              <trace from={`.${key.name} .pin2`} to={colToMicroPin[key.col]} />
             )}
           </group>
         )

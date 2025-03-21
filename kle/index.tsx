@@ -1,7 +1,8 @@
-import { KeyMatrix } from "./KeyMatrix"
+import { KeyMatrix } from "./lib/KeyMatrix"
 import { default60 } from "./keyboard-layouts/default60"
 import { PICO } from "@tsci/seveibar.PICO"
 import { sel } from "@tscircuit/core"
+import { A_1N4148WS } from "imports/A1N4148WS"
 
 export default () => (
   <board>
@@ -23,21 +24,6 @@ export default () => (
         "net.COL12",
         "net.COL13",
         "net.COL14",
-        // sel.U1.GP0,
-        // sel.U1.GP1,
-        // sel.U1.GP2,
-        // sel.U1.GP3,
-        // sel.U1.GP4,
-        // sel.U1.GP5,
-        // sel.U1.GP6,
-        // sel.U1.GP7,
-        // sel.U1.GP8,
-        // sel.U1.GP9,
-        // sel.U1.GP10,
-        // sel.U1.GP11,
-        // sel.U1.GP12,
-        // sel.U1.GP13,
-        // sel.U1.GP14,
       ]}
       rowToMicroPin={[
         "net.ROW1",
@@ -45,11 +31,6 @@ export default () => (
         "net.ROW3",
         "net.ROW4",
         "net.ROW5",
-        // sel.U1.GP15,
-        // sel.U1.GP16,
-        // sel.U1.GP17,
-        // sel.U1.GP18,
-        // sel.U1.GP19,
       ]}
     />
     <PICO
