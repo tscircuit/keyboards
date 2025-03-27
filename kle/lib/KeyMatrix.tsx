@@ -42,8 +42,8 @@ export const KeyMatrix = ({
             key={key.name}
             pcbX={relX}
             pcbY={relY}
-            schX={20 + relX / 10} // Scale down for schematic view
-            schY={relY / 10} // Scale down for schematic view
+            schX={35 + relX / 5} // Scale down for schematic view
+            schY={relY / 7} // Scale down for schematic view
           >
             <Key name={key.name} />
             {rowToMicroPin?.[key.row] !== undefined && (
@@ -55,6 +55,7 @@ export const KeyMatrix = ({
                 }}
                 pcbX={0.5}
                 pcbY={-13.5}
+                schY={-1}
                 layer="bottom"
               />
             )}

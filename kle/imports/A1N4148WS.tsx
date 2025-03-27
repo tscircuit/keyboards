@@ -9,6 +9,7 @@ export const A_1N4148WS = (props: ChipProps<typeof pinLabels>) => {
   return (
     <chip
       pinLabels={pinLabels}
+      symbolName="diode"
       supplierPartNumbers={{
         jlcpcb: ["C57759"],
       }}
