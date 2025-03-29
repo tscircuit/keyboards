@@ -35,7 +35,8 @@ export default () => (
     />
     <PICO
       name="U1"
-      pcbRotation="-90deg"
+      pcbRotation="90deg"
+      layer="bottom"
       pcbX={-175}
       pcbY={7}
       connections={{
@@ -61,5 +62,8 @@ export default () => (
         GP19: "net.ROW5",
       }}
     />
+    <hole pcbX={-180} pcbY={-56} diameter="2.2mm" />
+    <hole pcbX={115} pcbY={-32} diameter="2.2mm" />
+    <hole pcbX={119} pcbY={26} diameter="2.2mm" />
   </board>
 )
