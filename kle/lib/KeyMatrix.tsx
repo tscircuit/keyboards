@@ -62,6 +62,14 @@ export const KeyMatrix = ({
             {colToMicroPin?.[key.col] !== undefined && (
               <trace from={`.${key.name} .pin2`} to={colToMicroPin[key.col]} />
             )}
+                {key.name === 'K_SPACE' && (
+              <>
+        <hole pcbX={-50} pcbY={4} diameter={4} />
+        <hole pcbX={-50} pcbY={-11} diameter={3.2} />
+        <hole pcbX={50} pcbY={4} diameter={4} />
+        <hole pcbX={50} pcbY={-11} diameter={3.2} />
+              </>
+            )}
           </group>
         )
       })}
